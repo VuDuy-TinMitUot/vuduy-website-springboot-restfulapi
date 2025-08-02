@@ -21,6 +21,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(User user) {
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new IllegalArgumentException("Email đã tồn tại");
+        }
         return this.userRepository.save(user);
     }
 
@@ -46,7 +49,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(Long id) {
         if (!this.userRepository.existsById(id)) {
-            throw new NoSuchElementException("Không tìm thấy id người dùng");
+            throw new NoSuchElementException("Không tìm thấy người dùng");
         } else {
             this.userRepository.deleteById(id);
         }
